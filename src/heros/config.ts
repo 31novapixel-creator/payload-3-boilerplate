@@ -38,6 +38,20 @@ export const hero: Field = {
       ],
       required: true,
     },
+    // --- NOUVEAU CHAMP TAGLINE ---
+    {
+      name: 'tagline',
+      type: 'text',
+      label: 'Tagline (Sous-titre Code)',
+      // On met la valeur par défaut pour faciliter la vie
+      defaultValue: '< DU CONCEPT AU PIXEL />', 
+      admin: {
+        // Ce champ n'apparaîtra que si on choisit "High Impact"
+        condition: (_, { type } = {}) => type === 'highImpact',
+        description: 'La phrase style "tech" qui apparaît sous le logo.',
+      },
+    },
+    // -----------------------------
     {
       name: 'richText',
       type: 'richText',
