@@ -7,6 +7,9 @@ import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
+// 👇 1. IMPORT DU NOUVEAU BLOC
+import { BentoGrid } from '../../blocks/BentoGrid/config' 
+
 import { hero } from '@/heros/config'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -24,28 +27,33 @@ import { getServerSideURL } from '@/utilities/getURL'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
+  labels: {
+    singular: 'Page',
+    plural: 'Pages',
+  },
+  trash: true,
   access: {
     create: authenticated,
     delete: authenticated,
     read: authenticatedOrPublished,
     update: authenticated,
   },
-  // This config controls what's populated by default when a page is referenced
-  // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
-  // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'pagess'>
   defaultPopulate: {
     title: true,
     slug: true,
   },
   admin: {
+    group: 'Contenu Site',
+    description: 'Gérez ici les pages principales du site (Accueil, Contact, etc.)',
     defaultColumns: ['title', 'slug', 'updatedAt'],
+    listSearchableFields: ['title', 'slug'],
+    useAsTitle: 'title',
     livePreview: {
       url: ({ data }) => {
         const path = generatePreviewPath({
           slug: typeof data?.slug === 'string' ? data.slug : '',
           collection: 'pages',
         })
-
         return `${getServerSideURL()}${path}`
       },
     },
@@ -54,10 +62,11 @@ export const Pages: CollectionConfig<'pages'> = {
         slug: typeof data?.slug === 'string' ? data.slug : '',
         collection: 'pages',
       })
-
       return `${getServerSideURL()}${path}`
     },
-    useAsTitle: 'title',
+  },
+  lockDocuments: {
+    duration: 300,
   },
   fields: [
     {
@@ -77,7 +86,15 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
+              // 👇 2. AJOUT DU BLOC DANS LA LISTE ICI
+              blocks: [
+                CallToAction, 
+                Content, 
+                MediaBlock, 
+                Archive, 
+                FormBlock, 
+                BentoGrid // <--- Le voici !
+              ],
               required: true,
             },
           ],
@@ -98,13 +115,9 @@ export const Pages: CollectionConfig<'pages'> = {
             MetaImageField({
               relationTo: 'media',
             }),
-
             MetaDescriptionField({}),
             PreviewField({
-              // if the `generateUrl` function is configured
               hasGenerateFn: true,
-
-              // field paths to match the target field for data
               titlePath: 'meta.title',
               descriptionPath: 'meta.description',
             }),
@@ -128,7 +141,7 @@ export const Pages: CollectionConfig<'pages'> = {
   versions: {
     drafts: {
       autosave: {
-        interval: 100, // We set this interval for optimal live preview
+        interval: 100,
       },
     },
     maxPerDoc: 50,

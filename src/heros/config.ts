@@ -38,20 +38,16 @@ export const hero: Field = {
       ],
       required: true,
     },
-    // --- NOUVEAU CHAMP TAGLINE ---
     {
       name: 'tagline',
       type: 'text',
       label: 'Tagline (Sous-titre Code)',
-      // On met la valeur par défaut pour faciliter la vie
-      defaultValue: '< DU CONCEPT AU PIXEL />', 
+      defaultValue: '< DU CONCEPT AU PIXEL />',
       admin: {
-        // Ce champ n'apparaîtra que si on choisit "High Impact"
         condition: (_, { type } = {}) => type === 'highImpact',
         description: 'La phrase style "tech" qui apparaît sous le logo.',
       },
     },
-    // -----------------------------
     {
       name: 'richText',
       type: 'richText',
@@ -64,9 +60,66 @@ export const hero: Field = {
             InlineToolbarFeature(),
           ]
         },
+        admin: {
+            placeholder: 'Votre titre principal et description ici...',
+            hideGutter: true, 
+        }
       }),
       label: false,
     },
+    // --- NOUVEAU CHAMP : Features (Option 2) ---
+    {
+      name: 'features',
+      type: 'array',
+      label: 'Fonctionnalités (Cartes avec Icônes)',
+      minRows: 1,
+      maxRows: 6,
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+        description: 'Ajoutez ici les cartes à afficher sous la description.',
+      },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'icon',
+              type: 'select',
+              label: 'Icône (Lucide)',
+              required: true,
+              defaultValue: 'Zap',
+              options: [
+                { label: '⚡ Éclair (Zap)', value: 'Zap' },
+                { label: '🛡️ Bouclier (Shield)', value: 'Shield' },
+                { label: '🚀 Fusée (Rocket)', value: 'Rocket' },
+                { label: '📱 Smartphone (Smartphone)', value: 'Smartphone' },
+                { label: '💻 Laptop (Laptop)', value: 'Laptop' },
+                { label: '🎨 Pinceau (Palette)', value: 'Palette' },
+                { label: '🌐 Globe (Globe)', value: 'Globe' },
+                { label: '🔒 Cadenas (Lock)', value: 'Lock' },
+                { label: '⚙️ Paramètres (Settings)', value: 'Settings' },
+                { label: '👥 Utilisateurs (Users)', value: 'Users' },
+                { label: '📝 Fichier (FileText)', value: 'FileText' },
+                { label: '❤️ Cœur (Heart)', value: 'Heart' },
+              ],
+            },
+            {
+              name: 'title',
+              type: 'text',
+              label: 'Titre de la carte',
+              required: true,
+            },
+          ],
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          label: 'Description courte',
+          required: false,
+        },
+      ],
+    },
+    // --------------------------------------------
     linkGroup({
       overrides: {
         maxRows: 2,
@@ -79,7 +132,7 @@ export const hero: Field = {
         condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
       },
       relationTo: 'media',
-      required: true,
+      required: false,
     },
   ],
   label: false,

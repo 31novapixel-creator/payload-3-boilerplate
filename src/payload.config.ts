@@ -18,6 +18,7 @@ import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -57,6 +58,7 @@ export default buildConfig({
         },
       ],
     },
+    css: path.resolve(dirname, 'src/styles/custom.scss'),
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,

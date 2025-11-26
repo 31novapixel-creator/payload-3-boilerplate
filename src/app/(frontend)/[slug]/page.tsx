@@ -9,7 +9,7 @@ import { homeStatic } from '@/endpoints/seed/home-static'
 
 import type { Page as PageType } from '@/payload-types'
 
-import { RenderBlocks } from '@/blocks/RenderBlocks'
+import  { RenderBlocks }  from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'

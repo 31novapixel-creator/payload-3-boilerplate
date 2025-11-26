@@ -139,6 +139,8 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Gérez ici les pages principales du site (Accueil, Contact, etc.)
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
  */
@@ -166,6 +168,29 @@ export interface Page {
       };
       [k: string]: unknown;
     } | null;
+    /**
+     * Ajoutez ici les cartes à afficher sous la description.
+     */
+    features?:
+      | {
+          icon:
+            | 'Zap'
+            | 'Shield'
+            | 'Rocket'
+            | 'Smartphone'
+            | 'Laptop'
+            | 'Palette'
+            | 'Globe'
+            | 'Lock'
+            | 'Settings'
+            | 'Users'
+            | 'FileText'
+            | 'Heart';
+          title: string;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
     links?:
       | {
           link: {
@@ -187,7 +212,63 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | {
+        title: string;
+        intro?: string | null;
+        cards?:
+          | {
+              icon:
+                | 'Zap'
+                | 'Laptop'
+                | 'Smartphone'
+                | 'Rocket'
+                | 'Palette'
+                | 'Shield'
+                | 'Globe'
+                | 'Settings'
+                | 'Search'
+                | 'BarChart'
+                | 'Cloud'
+                | 'Bot';
+              /**
+               * Sur une grille de 3 colonnes au total.
+               */
+              span?: ('1' | '2' | '3') | null;
+              title: string;
+              description?: string | null;
+              links?:
+                | {
+                    link: {
+                      type?: ('reference' | 'custom') | null;
+                      newTab?: boolean | null;
+                      reference?: {
+                        relationTo: 'pages';
+                        value: number | Page;
+                      } | null;
+                      url?: string | null;
+                      label: string;
+                      /**
+                       * Choose how the link should be rendered.
+                       */
+                      appearance?: ('default' | 'outline') | null;
+                    };
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'bentoGrid';
+      }
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -201,6 +282,7 @@ export interface Page {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
 }
 /**
@@ -922,6 +1004,14 @@ export interface PagesSelect<T extends boolean = true> {
         type?: T;
         tagline?: T;
         richText?: T;
+        features?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              description?: T;
+              id?: T;
+            };
         links?:
           | T
           | {
@@ -947,6 +1037,38 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        bentoGrid?:
+          | T
+          | {
+              title?: T;
+              intro?: T;
+              cards?:
+                | T
+                | {
+                    icon?: T;
+                    span?: T;
+                    title?: T;
+                    description?: T;
+                    links?:
+                      | T
+                      | {
+                          link?:
+                            | T
+                            | {
+                                type?: T;
+                                newTab?: T;
+                                reference?: T;
+                                url?: T;
+                                label?: T;
+                                appearance?: T;
+                              };
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
       };
   meta?:
     | T
@@ -960,6 +1082,7 @@ export interface PagesSelect<T extends boolean = true> {
   slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   _status?: T;
 }
 /**

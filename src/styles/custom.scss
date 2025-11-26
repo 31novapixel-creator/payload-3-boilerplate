@@ -1,0 +1,75 @@
+@layer payload-default {
+  /* --- 1. COULEURS DE MARQUE (NOVAPIXEL) --- */
+  :root {
+    --brand-primary: #00bcfe;
+    --brand-primary-hover: #33c9fe;
+    --brand-bg-dark: #0a0a0a; /* Noir très profond mais pas absolu pour le confort */
+    --brand-bg-panel: #111111; /* Pour les cartes et panneaux */
+  }
+
+  /* --- 2. OVERRIDES POUR LE THÈME SOMBRE (Par défaut ou forcé) --- */
+  html[data-theme="dark"] {
+    /* Réécritures des variables de base Payload pour assombrir l'interface */
+    --theme-bg: var(--brand-bg-dark);
+    --theme-elevation-0: var(--brand-bg-dark);
+    --theme-elevation-50: var(--brand-bg-panel);
+    --theme-elevation-100: #1a1a1a;
+    --theme-elevation-150: #222222;
+    
+    /* La couleur "Success" ou "Primary" devient votre Bleu NovaPixel */
+    --theme-success-400: var(--brand-primary);
+    --theme-success-500: var(--brand-primary);
+    
+    /* Couleur des liens et focus */
+    --color-base-primary: var(--brand-primary);
+    
+    /* Customisation de la Scrollbar pour un look "Tech" */
+    ::-webkit-scrollbar-thumb {
+      background: #333;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--brand-primary);
+    }
+  }
+
+  /* --- 3. CIBLAGE SPÉCIFIQUE DES ÉLÉMENTS --- */
+  
+  /* Le bouton "Enregistrer" / "Publier" (souvent en accent color) */
+  .btn.btn--style-primary {
+    background-color: var(--brand-primary);
+    border-color: var(--brand-primary);
+    color: #000 !important; /* Texte noir sur bouton bleu pour contraste */
+    font-weight: 600;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: var(--brand-primary-hover);
+      box-shadow: 0 0 15px rgba(0, 188, 254, 0.4); /* Glow effect */
+    }
+  }
+
+  /* Navigation latérale (Sidebar) */
+  .nav {
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    
+    /* Logo ou titre dans la sidebar */
+    &__header {
+      color: var(--brand-primary);
+    }
+
+    /* Liens actifs dans le menu */
+    &__link--active {
+      color: var(--brand-primary) !important;
+      border-left-color: var(--brand-primary);
+      background: linear-gradient(90deg, rgba(0, 188, 254, 0.1) 0%, transparent 100%);
+    }
+  }
+
+  /* Champs de formulaire au focus */
+  .field-type .input-wrapper input:focus,
+  .field-type .input-wrapper textarea:focus {
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 2px rgba(0, 188, 254, 0.2);
+  }
+}
