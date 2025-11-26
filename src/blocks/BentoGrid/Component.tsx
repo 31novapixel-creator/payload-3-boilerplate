@@ -38,7 +38,7 @@ export const BentoGrid: React.FC<BentoGridProps> = ({ title, intro, cards }) => 
         <div className="mb-16 max-w-3xl">
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
             <span className="text-[#00bcfe] block text-sm font-mono mb-2 tracking-widest uppercase">
-              // Nos Services
+              {'// Nos Services'}
             </span>
             {title}
           </h2>
